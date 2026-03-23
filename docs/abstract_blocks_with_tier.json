@@ -1,0 +1,610 @@
+{
+  "_meta": {
+    "v": "1.0",
+    "desc": "PolymorphicBlocks Abstract Blocks for top-level structural design",
+    "legend": {
+      "n": "name",
+      "d": "has_default (1=yes)",
+      "b": "brief",
+      "p": "params",
+      "o": "ports",
+	  "t": "sys|sub|func",
+      "cat": {
+        "pwr": "Power",
+        "ctrl": "Controllers",
+        "conn": "Connectors",
+        "sens": "Sensors",
+        "ui": "UI",
+        "intf": "Interfaces",
+        "filt": "Filters",
+        "prot": "Protection",
+        "mem": "Memory",
+        "clk": "Clock",
+        "anlg": "Analog",
+        "arr": "Arrays"
+      }
+    }
+  },
+  "blocks": {
+    "intf": [
+      {
+        "n": "AnalogSwitch",
+        "b": "Base class for a n-ported analog switch with passive-typed ports.",
+        "o": [
+          "pwr",
+          "gnd",
+          "control_gnd",
+          "control",
+          "com",
+          "inputs"
+        ],
+        "t": "func"
+      },
+      {
+        "n": "Antenna",
+        "b": "",
+        "p": [
+          "frequency",
+          "impedance",
+          "power"
+        ],
+        "o": [
+          "a",
+          "gnd"
+        ],
+        "t": "sub"
+      },
+      {
+        "n": "SolidStateRelay",
+        "b": "Base class for solid state relays.",
+        "o": [
+          "leda",
+          "ledk",
+          "feta",
+          "fetb"
+        ],
+        "t": "func"
+      },
+      {
+        "n": "CanTransceiver",
+        "b": "Abstract CAN transceiver",
+        "o": [
+          "pwr",
+          "gnd",
+          "controller",
+          "can"
+        ],
+        "t": "sub"
+      },
+      {
+        "n": "IsolatedCanTransceiver",
+        "b": "",
+        "o": [
+          "can_pwr",
+          "can_gnd"
+        ],
+        "t": "sub"
+      },
+      {
+        "n": "AnalogToDigital",
+        "b": "",
+        "t": "func"
+      },
+      {
+        "n": "DigitalToAnalog",
+        "b": "",
+        "t": "func"
+      },
+      {
+        "n": "SpeakerDriver",
+        "b": "",
+        "t": "sub"
+      },
+      {
+        "n": "IoExpander",
+        "b": "",
+        "t": "sub"
+      },
+      {
+        "n": "BitBangAdapter",
+        "b": "Adapters that break out a structured Bundle to component wires, useful when bit-",
+        "t": "sub"
+      },
+      {
+        "n": "DigitalIsolator",
+        "b": "Multichannel digital isolator, shifts logic signals between different logic volt",
+        "o": [
+          "pwr_a",
+          "gnd_a",
+          "in_a",
+          "out_a",
+          "pwr_b",
+          "gnd_b",
+          "in_b",
+          "out_b"
+        ],
+        "t": "sub"
+      }
+    ],
+    "conn": [
+      {
+        "n": "BananaJack",
+        "b": "Base class for a single terminal 4mm banana jack, such as used on test equipment",
+        "o": [
+          "port"
+        ],
+        "t": "sub"
+      },
+      {
+        "n": "RfConnector",
+        "b": "Base class for a RF connector, with a signal and ground. Signal is passive-typed",
+        "o": [
+          "sig",
+          "gnd"
+        ],
+        "t": "sys"
+      },
+      {
+        "n": "UflConnector",
+        "b": "Base class for a U.FL / IPEX / UMCC connector, miniature RF connector.",
+        "t": "sys"
+      },
+      {
+        "n": "SmaConnector",
+        "b": "Base class for a SMA coax connector.",
+        "t": "sys"
+      },
+      {
+        "n": "SmaMConnector",
+        "b": "Base class for a SMA M connector, pin with internal threads.",
+        "t": "sys"
+      },
+      {
+        "n": "SmaFConnector",
+        "b": "Base class for a SMA F connector, socket with external threads.",
+        "t": "sys"
+      },
+      {
+        "n": "SwdCortexTargetConnector",
+        "b": "Programming header with power and SWD (SWCLK/SWDIO/RESET) pins.",
+        "o": [
+          "pwr",
+          "gnd",
+          "swd"
+        ],
+        "t": "sys"
+      },
+      {
+        "n": "Battery",
+        "b": "",
+        "p": [
+          "voltage",
+          "current"
+        ],
+        "o": [
+          "pwr",
+          "gnd"
+        ],
+        "t": "sys"
+      },
+      {
+        "n": "ProgrammingConnector",
+        "b": "Programming / debug / JTAG connectors.",
+        "t": "sys"
+      },
+      {
+        "n": "FootprintPassiveConnector",
+        "b": "PassiveConnector that is a footprint and provides some base functionality for ge",
+        "t": "sys"
+      },
+      {
+        "n": "UsbConnector",
+        "b": "USB connector of any generation / type.",
+        "t": "sys"
+      },
+      {
+        "n": "UsbHostConnector",
+        "b": "Abstract base class for a USB 2.0 device-side port connector",
+        "o": [
+          "pwr",
+          "gnd",
+          "usb"
+        ],
+        "t": "sys"
+      },
+      {
+        "n": "UsbDeviceConnector",
+        "b": "Abstract base class for a USB 2.0 device-side port connector",
+        "o": [
+          "pwr",
+          "gnd",
+          "usb"
+        ],
+        "t": "sys"
+      }
+    ],
+    "clk": [
+      {
+        "n": "OscillatorReference",
+        "b": "",
+        "d": 1,
+        "p": [
+          "frequency"
+        ],
+        "o": [
+          "crystal",
+          "gnd"
+        ],
+        "t": "sub"
+      },
+      {
+        "n": "Oscillator",
+        "b": "Device that generates a digital clock signal given power.",
+        "p": [
+          "frequency"
+        ],
+        "o": [
+          "gnd",
+          "pwr",
+          "out"
+        ],
+        "t": "sub"
+      },
+      {
+        "n": "RealtimeClock",
+        "b": "Realtime clock device.",
+        "t": "sys"
+      }
+    ],
+    "ui": [
+      {
+        "n": "IndicatorSinkLed",
+        "b": "Abstract part for an low-side-driven (\"common anode\") indicator LED",
+        "p": [
+          "color"
+        ],
+        "o": [
+          "signal",
+          "pwr"
+        ],
+        "t": "sub"
+      },
+      {
+        "n": "DigitalRotaryEncoder",
+        "b": "Wrapper around RotaryEncoder that provides digital ports that are pulled low (to",
+        "d": 1,
+        "o": [
+          "gnd",
+          "a",
+          "b"
+        ],
+        "t": "func"
+      },
+      {
+        "n": "DigitalDirectionSwitch",
+        "b": "Wrapper around DirectionSwitch that provides digital ports that are pulled low (",
+        "d": 1,
+        "o": [
+          "gnd",
+          "a",
+          "b",
+          "c",
+          "d"
+        ],
+        "t": "func"
+      },
+      {
+        "n": "Display",
+        "b": "Pixel displays.",
+        "t": "sys"
+      },
+      {
+        "n": "Lcd",
+        "b": "LCD display, where pixels absorb / reflect light, but do not directly emit light",
+        "t": "sub"
+      },
+      {
+        "n": "Oled",
+        "b": "OLED display, with the pixel density of an LCD but with infinite contrast and no",
+        "t": "sub"
+      },
+      {
+        "n": "EInk",
+        "b": "E-ink display, which retains the image after power is removed.",
+        "t": "sub"
+      },
+      {
+        "n": "Light",
+        "b": "Discrete lights.",
+        "t": "sub"
+      }
+    ],
+    "pwr": [
+      {
+        "n": "LedDriver",
+        "b": "Abstract current-regulated high-power LED driver.",
+        "p": [
+          "max_current"
+        ],
+        "o": [
+          "pwr",
+          "gnd",
+          "leda",
+          "ledk"
+        ],
+        "t": "sub"
+      },
+      {
+        "n": "VoltageRegulator",
+        "b": "Structural abstract base class for DC-DC voltage regulators with shared ground (",
+        "d": 1,
+        "p": [
+          "output_voltage"
+        ],
+        "o": [
+          "pwr_in",
+          "pwr_out",
+          "gnd"
+        ],
+        "t": "sys"
+      },
+      {
+        "n": "LinearRegulator",
+        "b": "Structural abstract base class for linear regulators, a voltage regulator that c",
+        "d": 1,
+        "t": "sys"
+      },
+      {
+        "n": "SwitchingVoltageRegulator",
+        "b": "",
+        "t": "sys"
+      },
+      {
+        "n": "BuckConverter",
+        "b": "Step-down switching converter",
+        "d": 1,
+        "t": "sub"
+      },
+      {
+        "n": "BoostConverter",
+        "b": "Step-up switching converter",
+        "d": 1,
+        "t": "sub"
+      },
+      {
+        "n": "BuckBoostConverter",
+        "b": "Step-up or switch-down switching converter",
+        "d": 1,
+        "t": "sub"
+      },
+      {
+        "n": "MotorDriver",
+        "b": "",
+        "t": "sub"
+      },
+      {
+        "n": "BrushedMotorDriver",
+        "b": "A brushed motor driver, or at least the power stage for one.",
+        "t": "sub"
+      },
+      {
+        "n": "BldcDriver",
+        "b": "A brushless motor driver, or at least the power stage for one - may be as simple",
+        "t": "sub"
+      },
+      {
+        "n": "HalfBridgeDriver",
+        "b": "Half-bridge driver with independent low / high control for driving two NMOS devi",
+        "p": [
+          "has_boot_diode"
+        ],
+        "o": [
+          "pwr",
+          "gnd",
+          "low_out",
+          "high_pwr",
+          "high_gnd",
+          "high_out"
+        ],
+        "t": "sub"
+      },
+      {
+        "n": "HalfBridge",
+        "b": "Half bridge circuit with logic-level inputs and current draw calculated from the",
+        "d": 1,
+        "o": [
+          "gnd",
+          "pwr",
+          "out",
+          "pwr_logic"
+        ],
+        "t": "func"
+      }
+    ],
+    "anlg": [
+      {
+        "n": "Opamp",
+        "b": "Base class for opamps. Parameters need to be more restricted in subclasses.",
+        "o": [
+          "pwr",
+          "gnd",
+          "inp",
+          "inn",
+          "out"
+        ],
+        "t": "func"
+      },
+      {
+        "n": "MultipackOpamp",
+        "b": "Base class for packed opamps - devices that have multiple opamps in a single pac",
+        "t": "func"
+      },
+      {
+        "n": "OpampApplication",
+        "b": "Opamp-based circuits, typically one that perform some function on signals",
+        "t": "func"
+      }
+    ],
+    "arr": [
+      {
+        "n": "ResistorArray",
+        "b": "An n-element resistor array, where all resistors have the same resistance and po",
+        "p": [
+          "count"
+        ],
+        "t": "sub"
+      }
+    ],
+    "mem": [
+      {
+        "n": "SpiMemory",
+        "b": "Base class for SPI memory, with acceptable sizes (in bits) as a range.",
+        "p": [
+          "size"
+        ],
+        "o": [
+          "pwr",
+          "gnd",
+          "spi",
+          "cs"
+        ],
+        "t": "sys"
+      }
+    ],
+    "prot": [
+      {
+        "n": "CanEsdDiode",
+        "b": "",
+        "o": [
+          "gnd",
+          "can"
+        ],
+        "t": "sub"
+      },
+      {
+        "n": "UsbEsdDiode",
+        "b": "",
+        "o": [
+          "gnd",
+          "usb"
+        ],
+        "t": "sub"
+      }
+    ],
+    "filt": [
+      {
+        "n": "AnalogFilter",
+        "b": "Analog signal conditioning subcircuit.",
+        "t": "func"
+      },
+      {
+        "n": "RfFilter",
+        "b": "RF signal conditioning subcircuit.",
+        "t": "func"
+      },
+      {
+        "n": "DigitalFilter",
+        "b": "Digital signal conditioning block.",
+        "t": "func"
+      }
+    ],
+    "ctrl": [
+      {
+        "n": "Microcontroller",
+        "b": "Microcontroller (with embedded-class processor) with its surrounding application",
+        "t": "sub"
+      },
+      {
+        "n": "Fpga",
+        "b": "FPGA with its surrounding application circuit.",
+        "t": "sub"
+      },
+      {
+        "n": "IoController",
+        "b": "Structural abstract base class for a programmable controller chip (including mic",
+        "o": [
+          "gnd",
+          "pwr"
+        ],
+        "t": "sys"
+      }
+    ],
+    "sens": [
+      {
+        "n": "CurrentSensor",
+        "b": "",
+        "t": "sys"
+      },
+      {
+        "n": "Accelerometer",
+        "b": "",
+        "t": "sub"
+      },
+      {
+        "n": "Gyroscope",
+        "b": "",
+        "t": "sub"
+      },
+      {
+        "n": "EnvironmentalSensor",
+        "b": "",
+        "t": "sys"
+      },
+      {
+        "n": "TemperatureSensor",
+        "b": "",
+        "t": "sys"
+      },
+      {
+        "n": "HumiditySensor",
+        "b": "",
+        "t": "sys"
+      },
+      {
+        "n": "PressureSensor",
+        "b": "Sensors measuring ambient pressure",
+        "t": "sys"
+      },
+      {
+        "n": "GasSensor",
+        "b": "Sensors measuring gas concentration, including non-particle IAQ, TVOC, eCO2, and",
+        "t": "sys"
+      },
+      {
+        "n": "LightSensor",
+        "b": "",
+        "t": "sys"
+      },
+      {
+        "n": "MagneticSensor",
+        "b": "",
+        "t": "sys"
+      },
+      {
+        "n": "MagneticSwitch",
+        "b": "A switch that is activated by a magnetic field, including omnipolar and bipolar ",
+        "t": "func"
+      },
+      {
+        "n": "Magnetometer",
+        "b": "Linear response magnetic field sensor, potentially with multiple axes",
+        "t": "sub"
+      },
+      {
+        "n": "Microphone",
+        "b": "",
+        "t": "sub"
+      },
+      {
+        "n": "Camera",
+        "b": "Imaging sensors, including visible / RGB, IR, and thermal.",
+        "t": "sub"
+      },
+      {
+        "n": "DistanceSensor",
+        "b": "",
+        "t": "sys"
+      }
+    ]
+  }
+}
