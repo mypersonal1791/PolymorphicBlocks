@@ -20,6 +20,130 @@
       "clock": "Clock & Timing",
       "analog": "Analog Circuits",
       "arrays": "Component Arrays"
+    },
+    "interface_types": {
+      "canlogic": {
+        "name": "CanLogicLink",
+        "description": "Logic level CAN link, RXD and TXD signals",
+        "category": "communication",
+        "endpoints": [
+          "controller",
+          "transceiver",
+          "passive"
+        ]
+      },
+      "candiff": {
+        "name": "CanDiffLink",
+        "description": "Differential CAN link, CANH and CANL signals",
+        "category": "communication",
+        "endpoints": [
+          "nodes"
+        ]
+      },
+      "crystal": {
+        "name": "CrystalLink",
+        "description": "Crystal oscillator connection",
+        "category": "timing",
+        "endpoints": [
+          "driver",
+          "crystal"
+        ]
+      },
+      "swd": {
+        "name": "SwdLink",
+        "description": "SWD debug interface",
+        "category": "debug",
+        "endpoints": [
+          "host",
+          "device",
+          "pull"
+        ]
+      },
+      "dvp8": {
+        "name": "Dvp8Link",
+        "description": "DVP (Digital Video Port) camera link with 8-wide data connection.",
+        "category": "communication",
+        "endpoints": [
+          "host",
+          "cam"
+        ]
+      },
+      "i2c": {
+        "name": "I2cLink",
+        "description": "I2C connection, using terminology from the auhtoritative NXP specification at",
+        "category": "communication",
+        "endpoints": [
+          "controller",
+          "targets",
+          "pull"
+        ]
+      },
+      "i2s": {
+        "name": "I2sLink",
+        "description": "I2S audio interface",
+        "category": "communication",
+        "endpoints": [
+          "controller",
+          "target_receiver"
+        ]
+      },
+      "speaker": {
+        "name": "SpeakerLink",
+        "description": "Speaker audio output",
+        "category": "analog",
+        "endpoints": [
+          "source",
+          "sink"
+        ]
+      },
+      "spi": {
+        "name": "SpiLink",
+        "description": "Controller/peripheral naming conventions follow https://www.oshwa.org/a-resolution-to-redefine-spi-signal-names/,",
+        "category": "communication",
+        "endpoints": [
+          "controller",
+          "peripherals"
+        ]
+      },
+      "uart": {
+        "name": "UartLink",
+        "description": "UART serial communication",
+        "category": "communication",
+        "endpoints": [
+          "a",
+          "b"
+        ]
+      },
+      "usb": {
+        "name": "UsbLink",
+        "description": "USB data and power connection",
+        "category": "communication",
+        "endpoints": [
+          "host",
+          "device",
+          "passive"
+        ]
+      },
+      "usbcc": {
+        "name": "UsbCcLink",
+        "description": "USB data and power connection",
+        "category": "communication",
+        "endpoints": [
+          "a",
+          "b"
+        ]
+      }
+    },
+    "interface_types_info": {
+      "description": "Architecture-level interface types (Links) for structural design",
+      "usage": "Use these to define high-level connections between modules without specifying exact pin-to-pin wiring",
+      "categories": {
+        "power": "Power distribution and voltage supply",
+        "communication": "Digital communication protocols",
+        "analog": "Analog signal connections",
+        "timing": "Clock and timing signals",
+        "debug": "Debug and programming interfaces"
+      }
     }
   },
   "blocks": {
@@ -27,14 +151,6 @@
       {
         "name": "AnalogSwitch",
         "description": "Base class for a n-ported analog switch with passive-typed ports.",
-        "ports": [
-          "pwr",
-          "gnd",
-          "control_gnd",
-          "control",
-          "com",
-          "inputs"
-        ],
         "tier": "functional"
       },
       {
@@ -45,42 +161,32 @@
           "impedance",
           "power"
         ],
-        "ports": [
-          "a",
-          "gnd"
-        ],
         "tier": "subsystem"
       },
       {
         "name": "SolidStateRelay",
         "description": "Base class for solid state relays.",
-        "ports": [
-          "leda",
-          "ledk",
-          "feta",
-          "fetb"
-        ],
         "tier": "functional"
       },
       {
         "name": "CanTransceiver",
         "description": "Abstract CAN transceiver",
-        "ports": [
-          "pwr",
-          "gnd",
-          "controller",
-          "can"
-        ],
-        "tier": "subsystem"
+        "tier": "subsystem",
+        "supported_interfaces": [
+          "power",
+          "canlogic",
+          "candiff"
+        ]
       },
       {
         "name": "IsolatedCanTransceiver",
         "description": "",
-        "ports": [
-          "can_pwr",
-          "can_gnd"
-        ],
-        "tier": "subsystem"
+        "tier": "subsystem",
+        "supported_interfaces": [
+          "power",
+          "canlogic",
+          "candiff"
+        ]
       },
       {
         "name": "AnalogToDigital",
@@ -95,12 +201,21 @@
       {
         "name": "SpeakerDriver",
         "description": "",
-        "tier": "subsystem"
+        "tier": "subsystem",
+        "supported_interfaces": [
+          "power",
+          "speaker"
+        ]
       },
       {
         "name": "IoExpander",
         "description": "",
-        "tier": "subsystem"
+        "tier": "subsystem",
+        "supported_interfaces": [
+          "power",
+          "i2c",
+          "spi"
+        ]
       },
       {
         "name": "BitBangAdapter",
@@ -110,35 +225,21 @@
       {
         "name": "DigitalIsolator",
         "description": "Multichannel digital isolator, shifts logic signals between different logic volt",
-        "ports": [
-          "pwr_a",
-          "gnd_a",
-          "in_a",
-          "out_a",
-          "pwr_b",
-          "gnd_b",
-          "in_b",
-          "out_b"
-        ],
-        "tier": "subsystem"
+        "tier": "subsystem",
+        "supported_interfaces": [
+          "power"
+        ]
       }
     ],
     "connectors": [
       {
         "name": "BananaJack",
         "description": "Base class for a single terminal 4mm banana jack, such as used on test equipment",
-        "ports": [
-          "port"
-        ],
         "tier": "subsystem"
       },
       {
         "name": "RfConnector",
         "description": "Base class for a RF connector, with a signal and ground. Signal is passive-typed",
-        "ports": [
-          "sig",
-          "gnd"
-        ],
         "tier": "system"
       },
       {
@@ -164,12 +265,11 @@
       {
         "name": "SwdCortexTargetConnector",
         "description": "Programming header with power and SWD (SWCLK/SWDIO/RESET) pins.",
-        "ports": [
-          "pwr",
-          "gnd",
+        "tier": "system",
+        "supported_interfaces": [
+          "power",
           "swd"
-        ],
-        "tier": "system"
+        ]
       },
       {
         "name": "Battery",
@@ -178,16 +278,19 @@
           "voltage",
           "current"
         ],
-        "ports": [
-          "pwr",
-          "gnd"
-        ],
-        "tier": "system"
+        "tier": "system",
+        "supported_interfaces": [
+          "power"
+        ]
       },
       {
         "name": "ProgrammingConnector",
         "description": "Programming / debug / JTAG connectors.",
-        "tier": "system"
+        "tier": "system",
+        "supported_interfaces": [
+          "power",
+          "swd"
+        ]
       },
       {
         "name": "FootprintPassiveConnector",
@@ -197,27 +300,29 @@
       {
         "name": "UsbConnector",
         "description": "USB connector of any generation / type.",
-        "tier": "system"
+        "tier": "system",
+        "supported_interfaces": [
+          "power",
+          "usb"
+        ]
       },
       {
         "name": "UsbHostConnector",
         "description": "Abstract base class for a USB 2.0 device-side port connector",
-        "ports": [
-          "pwr",
-          "gnd",
+        "tier": "system",
+        "supported_interfaces": [
+          "power",
           "usb"
-        ],
-        "tier": "system"
+        ]
       },
       {
         "name": "UsbDeviceConnector",
         "description": "Abstract base class for a USB 2.0 device-side port connector",
-        "ports": [
-          "pwr",
-          "gnd",
+        "tier": "system",
+        "supported_interfaces": [
+          "power",
           "usb"
-        ],
-        "tier": "system"
+        ]
       }
     ],
     "clock": [
@@ -228,11 +333,10 @@
         "parameters": [
           "frequency"
         ],
-        "ports": [
-          "crystal",
-          "gnd"
-        ],
-        "tier": "subsystem"
+        "tier": "subsystem",
+        "supported_interfaces": [
+          "crystal"
+        ]
       },
       {
         "name": "Oscillator",
@@ -240,17 +344,20 @@
         "parameters": [
           "frequency"
         ],
-        "ports": [
-          "gnd",
-          "pwr",
-          "out"
-        ],
-        "tier": "subsystem"
+        "tier": "subsystem",
+        "supported_interfaces": [
+          "power",
+          "crystal"
+        ]
       },
       {
         "name": "RealtimeClock",
         "description": "Realtime clock device.",
-        "tier": "system"
+        "tier": "system",
+        "supported_interfaces": [
+          "power",
+          "i2c"
+        ]
       }
     ],
     "user_interface": [
@@ -260,34 +367,18 @@
         "parameters": [
           "color"
         ],
-        "ports": [
-          "signal",
-          "pwr"
-        ],
         "tier": "subsystem"
       },
       {
         "name": "DigitalRotaryEncoder",
         "description": "Wrapper around RotaryEncoder that provides digital ports that are pulled low (to",
         "has_default": true,
-        "ports": [
-          "gnd",
-          "a",
-          "b"
-        ],
         "tier": "functional"
       },
       {
         "name": "DigitalDirectionSwitch",
         "description": "Wrapper around DirectionSwitch that provides digital ports that are pulled low (",
         "has_default": true,
-        "ports": [
-          "gnd",
-          "a",
-          "b",
-          "c",
-          "d"
-        ],
         "tier": "functional"
       },
       {
@@ -323,12 +414,6 @@
         "parameters": [
           "max_current"
         ],
-        "ports": [
-          "pwr",
-          "gnd",
-          "leda",
-          "ledk"
-        ],
         "tier": "subsystem"
       },
       {
@@ -338,41 +423,54 @@
         "parameters": [
           "output_voltage"
         ],
-        "ports": [
-          "pwr_in",
-          "pwr_out",
-          "gnd"
-        ],
-        "tier": "system"
+        "tier": "system",
+        "supported_interfaces": [
+          "power"
+        ]
       },
       {
         "name": "LinearRegulator",
         "description": "Structural abstract base class for linear regulators, a voltage regulator that c",
         "has_default": true,
-        "tier": "system"
+        "tier": "system",
+        "supported_interfaces": [
+          "power"
+        ]
       },
       {
         "name": "SwitchingVoltageRegulator",
         "description": "",
-        "tier": "system"
+        "tier": "system",
+        "supported_interfaces": [
+          "power"
+        ]
       },
       {
         "name": "BuckConverter",
         "description": "Step-down switching converter",
         "has_default": true,
-        "tier": "subsystem"
+        "tier": "subsystem",
+        "supported_interfaces": [
+          "power"
+        ]
       },
       {
         "name": "BoostConverter",
         "description": "Step-up switching converter",
         "has_default": true,
-        "tier": "subsystem"
+        "tier": "subsystem",
+        "supported_interfaces": [
+          "power"
+        ]
       },
       {
         "name": "BuckBoostConverter",
         "description": "Step-up or switch-down switching converter",
         "has_default": true,
-        "tier": "subsystem"
+        "tier": "subsystem",
+        "supported_interfaces": [
+          "power"
+        ]
       },
       {
         "name": "MotorDriver",
@@ -395,26 +493,12 @@
         "parameters": [
           "has_boot_diode"
         ],
-        "ports": [
-          "pwr",
-          "gnd",
-          "low_out",
-          "high_pwr",
-          "high_gnd",
-          "high_out"
-        ],
         "tier": "subsystem"
       },
       {
         "name": "HalfBridge",
         "description": "Half bridge circuit with logic-level inputs and current draw calculated from the",
         "has_default": true,
-        "ports": [
-          "gnd",
-          "pwr",
-          "out",
-          "pwr_logic"
-        ],
         "tier": "functional"
       }
     ],
@@ -422,13 +506,6 @@
       {
         "name": "Opamp",
         "description": "Base class for opamps. Parameters need to be more restricted in subclasses.",
-        "ports": [
-          "pwr",
-          "gnd",
-          "inp",
-          "inn",
-          "out"
-        ],
         "tier": "functional"
       },
       {
@@ -459,32 +536,22 @@
         "parameters": [
           "size"
         ],
-        "ports": [
-          "pwr",
-          "gnd",
-          "spi",
-          "cs"
-        ],
-        "tier": "system"
+        "tier": "system",
+        "supported_interfaces": [
+          "power",
+          "spi"
+        ]
       }
     ],
     "protection": [
       {
         "name": "CanEsdDiode",
         "description": "",
-        "ports": [
-          "gnd",
-          "can"
-        ],
         "tier": "subsystem"
       },
       {
         "name": "UsbEsdDiode",
         "description": "",
-        "ports": [
-          "gnd",
-          "usb"
-        ],
         "tier": "subsystem"
       }
     ],
@@ -509,21 +576,40 @@
       {
         "name": "Microcontroller",
         "description": "Microcontroller (with embedded-class processor) with its surrounding application",
-        "tier": "subsystem"
+        "tier": "subsystem",
+        "supported_interfaces": [
+          "power",
+          "usb",
+          "i2c",
+          "spi",
+          "uart",
+          "can",
+          "swd"
+        ]
       },
       {
         "name": "Fpga",
         "description": "FPGA with its surrounding application circuit.",
-        "tier": "subsystem"
+        "tier": "subsystem",
+        "supported_interfaces": [
+          "power",
+          "i2c",
+          "spi",
+          "uart"
+        ]
       },
       {
         "name": "IoController",
         "description": "Structural abstract base class for a programmable controller chip (including mic",
-        "ports": [
-          "gnd",
-          "pwr"
-        ],
-        "tier": "system"
+        "tier": "system",
+        "supported_interfaces": [
+          "power",
+          "usb",
+          "i2c",
+          "spi",
+          "uart",
+          "can"
+        ]
       }
     ],
     "sensors": [
@@ -535,12 +621,22 @@
       {
         "name": "Accelerometer",
         "description": "",
-        "tier": "subsystem"
+        "tier": "subsystem",
+        "supported_interfaces": [
+          "power",
+          "i2c",
+          "spi"
+        ]
       },
       {
         "name": "Gyroscope",
         "description": "",
-        "tier": "subsystem"
+        "tier": "subsystem",
+        "supported_interfaces": [
+          "power",
+          "i2c",
+          "spi"
+        ]
       },
       {
         "name": "EnvironmentalSensor",
@@ -550,27 +646,48 @@
       {
         "name": "TemperatureSensor",
         "description": "",
-        "tier": "system"
+        "tier": "system",
+        "supported_interfaces": [
+          "power",
+          "i2c"
+        ]
       },
       {
         "name": "HumiditySensor",
         "description": "",
-        "tier": "system"
+        "tier": "system",
+        "supported_interfaces": [
+          "power",
+          "i2c"
+        ]
       },
       {
         "name": "PressureSensor",
         "description": "Sensors measuring ambient pressure",
-        "tier": "system"
+        "tier": "system",
+        "supported_interfaces": [
+          "power",
+          "i2c"
+        ]
       },
       {
         "name": "GasSensor",
         "description": "Sensors measuring gas concentration, including non-particle IAQ, TVOC, eCO2, and",
-        "tier": "system"
+        "tier": "system",
+        "supported_interfaces": [
+          "power",
+          "i2c",
+          "uart"
+        ]
       },
       {
         "name": "LightSensor",
         "description": "",
-        "tier": "system"
+        "tier": "system",
+        "supported_interfaces": [
+          "power",
+          "i2c"
+        ]
       },
       {
         "name": "MagneticSensor",
@@ -585,17 +702,30 @@
       {
         "name": "Magnetometer",
         "description": "Linear response magnetic field sensor, potentially with multiple axes",
-        "tier": "subsystem"
+        "tier": "subsystem",
+        "supported_interfaces": [
+          "power",
+          "i2c",
+          "spi"
+        ]
       },
       {
         "name": "Microphone",
         "description": "",
-        "tier": "subsystem"
+        "tier": "subsystem",
+        "supported_interfaces": [
+          "power",
+          "i2s"
+        ]
       },
       {
         "name": "Camera",
         "description": "Imaging sensors, including visible / RGB, IR, and thermal.",
-        "tier": "subsystem"
+        "tier": "subsystem",
+        "supported_interfaces": [
+          "power",
+          "dvp8"
+        ]
       },
       {
         "name": "DistanceSensor",
