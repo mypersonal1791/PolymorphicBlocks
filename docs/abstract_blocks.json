@@ -79,7 +79,7 @@
       },
       "i2c": {
         "name": "I2cLink",
-        "description": "I2C connection, using terminology from the auhtoritative NXP specification at",
+        "description": "I2C connection, using terminology from the authoritative NXP specification",
         "category": "communication",
         "endpoints": [
           "controller",
@@ -107,7 +107,7 @@
       },
       "spi": {
         "name": "SpiLink",
-        "description": "Controller/peripheral naming conventions follow https://www.oshwa.org/a-resolution-to-redefine-spi-signal-names/,",
+        "description": "SPI serial communication with controller/peripheral naming conventions",
         "category": "communication",
         "endpoints": [
           "controller",
@@ -135,7 +135,7 @@
       },
       "usbcc": {
         "name": "UsbCcLink",
-        "description": "USB data and power connection",
+        "description": "USB Type-C CC (Configuration Channel) for role detection, orientation detection, and power delivery negotiation",
         "category": "communication",
         "endpoints": [
           "a",
@@ -244,7 +244,7 @@
       },
       {
         "name": "BitBangAdapter",
-        "description": "Adapters that break out a structured Bundle to component wires, useful when bit-",
+        "description": "Adapters that break out a structured Bundle to component wires, useful when bit-banging those protocols",
         "tier": "subsystem",
         "supported_interfaces": [
           "power"
@@ -252,10 +252,13 @@
       },
       {
         "name": "DigitalIsolator",
-        "description": "Multichannel digital isolator, shifts logic signals between different logic volt",
+        "description": "Multichannel digital isolator, shifts logic signals between different logic voltages and isolation domains",
         "tier": "subsystem",
         "supported_interfaces": [
-          "power"
+          "power",
+          "i2c",
+          "spi",
+          "uart"
         ]
       }
     ],
@@ -300,18 +303,6 @@
         ]
       },
       {
-        "name": "Battery",
-        "description": "",
-        "parameters": [
-          "voltage",
-          "current"
-        ],
-        "tier": "system",
-        "supported_interfaces": [
-          "power"
-        ]
-      },
-      {
         "name": "ProgrammingConnector",
         "description": "Programming / debug / JTAG connectors.",
         "tier": "system",
@@ -322,7 +313,7 @@
       },
       {
         "name": "FootprintPassiveConnector",
-        "description": "PassiveConnector that is a footprint and provides some base functionality for ge",
+        "description": "PassiveConnector that is a footprint and provides some base functionality for generating connectors",
         "tier": "system"
       },
       {
@@ -336,7 +327,7 @@
       },
       {
         "name": "UsbHostConnector",
-        "description": "Abstract base class for a USB 2.0 device-side port connector",
+        "description": "Abstract base class for a USB 2.0 host-side port connector",
         "tier": "system",
         "supported_interfaces": [
           "power",
@@ -374,8 +365,7 @@
         ],
         "tier": "subsystem",
         "supported_interfaces": [
-          "power",
-          "crystal"
+          "power"
         ]
       },
       {
@@ -482,21 +472,21 @@
       },
       {
         "name": "VoltageRegulator",
-        "description": "Structural abstract base class for DC-DC voltage regulators with shared ground (",
+        "description": "Structural abstract base class for DC-DC voltage regulators with shared ground (non-isolated)",
         "has_default": true,
         "parameters": [
           "output_voltage"
         ],
-        "tier": "system",
+        "tier": "subsystem",
         "supported_interfaces": [
           "power"
         ]
       },
       {
         "name": "LinearRegulator",
-        "description": "Structural abstract base class for linear regulators, a voltage regulator that c",
+        "description": "Structural abstract base class for linear regulators, a voltage regulator that can produce output voltage lower than input voltage",
         "has_default": true,
-        "tier": "system",
+        "tier": "subsystem",
         "supported_interfaces": [
           "power"
         ]
@@ -504,7 +494,7 @@
       {
         "name": "SwitchingVoltageRegulator",
         "description": "",
-        "tier": "system",
+        "tier": "subsystem",
         "supported_interfaces": [
           "power"
         ]
@@ -549,7 +539,7 @@
       },
       {
         "name": "BrushedMotorDriver",
-        "description": "A brushed motor driver, or at least the power stage for one.",
+        "description": "A brushed motor driver, or at least the power stage for one",
         "tier": "subsystem",
         "supported_interfaces": [
           "power"
@@ -557,7 +547,7 @@
       },
       {
         "name": "BldcDriver",
-        "description": "A brushless motor driver, or at least the power stage for one - may be as simple",
+        "description": "A brushless motor driver, or at least the power stage for one - may be as simple as 3 half-bridges",
         "tier": "subsystem",
         "supported_interfaces": [
           "power",
@@ -567,7 +557,7 @@
       },
       {
         "name": "HalfBridgeDriver",
-        "description": "Half-bridge driver with independent low / high control for driving two NMOS devi",
+        "description": "Half-bridge driver with independent low / high control for driving two NMOS devices, with a high-side driver that allows a voltage offset from the main gnd",
         "parameters": [
           "has_boot_diode"
         ],
@@ -578,9 +568,21 @@
       },
       {
         "name": "HalfBridge",
-        "description": "Half bridge circuit with logic-level inputs and current draw calculated from the",
+        "description": "Half bridge circuit with logic-level inputs and current draw calculated from the output node",
         "has_default": true,
         "tier": "functional",
+        "supported_interfaces": [
+          "power"
+        ]
+      },
+      {
+        "name": "Battery",
+        "description": "",
+        "parameters": [
+          "voltage",
+          "current"
+        ],
+        "tier": "system",
         "supported_interfaces": [
           "power"
         ]
@@ -597,7 +599,7 @@
       },
       {
         "name": "MultipackOpamp",
-        "description": "Base class for packed opamps - devices that have multiple opamps in a single pac",
+        "description": "Base class for packed opamps - devices that have multiple opamps in a single package, with shared power and ground connections",
         "tier": "functional",
         "supported_interfaces": [
           "power"
@@ -640,12 +642,18 @@
       {
         "name": "CanEsdDiode",
         "description": "",
-        "tier": "subsystem"
+        "tier": "subsystem",
+        "supported_interfaces": [
+          "candiff"
+        ]
       },
       {
         "name": "UsbEsdDiode",
         "description": "",
-        "tier": "subsystem"
+        "tier": "subsystem",
+        "supported_interfaces": [
+          "usb"
+        ]
       }
     ],
     "filters": [
@@ -781,7 +789,7 @@
       },
       {
         "name": "GasSensor",
-        "description": "Sensors measuring gas concentration, including non-particle IAQ, TVOC, eCO2, and",
+        "description": "Sensors measuring gas concentration, including non-particle IAQ, TVOC, eCO2, and CO2 sensors",
         "tier": "system",
         "supported_interfaces": [
           "power",
