@@ -22,6 +22,15 @@
       "arrays": "Component Arrays"
     },
     "interface_types": {
+      "power": {
+        "name": "VoltageLink",
+        "description": "Power supply connection with voltage source and sinks",
+        "category": "power",
+        "endpoints": [
+          "source",
+          "sinks"
+        ]
+      },
       "canlogic": {
         "name": "CanLogicLink",
         "description": "Logic level CAN link, RXD and TXD signals",
@@ -151,7 +160,10 @@
       {
         "name": "AnalogSwitch",
         "description": "Base class for a n-ported analog switch with passive-typed ports.",
-        "tier": "functional"
+        "tier": "functional",
+        "supported_interfaces": [
+          "power"
+        ]
       },
       {
         "name": "Antenna",
@@ -166,7 +178,10 @@
       {
         "name": "SolidStateRelay",
         "description": "Base class for solid state relays.",
-        "tier": "functional"
+        "tier": "functional",
+        "supported_interfaces": [
+          "power"
+        ]
       },
       {
         "name": "CanTransceiver",
@@ -191,12 +206,22 @@
       {
         "name": "AnalogToDigital",
         "description": "",
-        "tier": "functional"
+        "tier": "functional",
+        "supported_interfaces": [
+          "power",
+          "i2c",
+          "spi"
+        ]
       },
       {
         "name": "DigitalToAnalog",
         "description": "",
-        "tier": "functional"
+        "tier": "functional",
+        "supported_interfaces": [
+          "power",
+          "i2c",
+          "spi"
+        ]
       },
       {
         "name": "SpeakerDriver",
@@ -220,7 +245,10 @@
       {
         "name": "BitBangAdapter",
         "description": "Adapters that break out a structured Bundle to component wires, useful when bit-",
-        "tier": "subsystem"
+        "tier": "subsystem",
+        "supported_interfaces": [
+          "power"
+        ]
       },
       {
         "name": "DigitalIsolator",
@@ -367,44 +395,75 @@
         "parameters": [
           "color"
         ],
-        "tier": "subsystem"
+        "tier": "subsystem",
+        "supported_interfaces": [
+          "power"
+        ]
       },
       {
         "name": "DigitalRotaryEncoder",
         "description": "Wrapper around RotaryEncoder that provides digital ports that are pulled low (to",
         "has_default": true,
-        "tier": "functional"
+        "tier": "functional",
+        "supported_interfaces": [
+          "power"
+        ]
       },
       {
         "name": "DigitalDirectionSwitch",
         "description": "Wrapper around DirectionSwitch that provides digital ports that are pulled low (",
         "has_default": true,
-        "tier": "functional"
+        "tier": "functional",
+        "supported_interfaces": [
+          "power"
+        ]
       },
       {
         "name": "Display",
         "description": "Pixel displays.",
-        "tier": "system"
+        "tier": "system",
+        "supported_interfaces": [
+          "power",
+          "i2c",
+          "spi"
+        ]
       },
       {
         "name": "Lcd",
         "description": "LCD display, where pixels absorb / reflect light, but do not directly emit light",
-        "tier": "subsystem"
+        "tier": "subsystem",
+        "supported_interfaces": [
+          "power",
+          "i2c",
+          "spi"
+        ]
       },
       {
         "name": "Oled",
         "description": "OLED display, with the pixel density of an LCD but with infinite contrast and no",
-        "tier": "subsystem"
+        "tier": "subsystem",
+        "supported_interfaces": [
+          "power",
+          "i2c",
+          "spi"
+        ]
       },
       {
         "name": "EInk",
         "description": "E-ink display, which retains the image after power is removed.",
-        "tier": "subsystem"
+        "tier": "subsystem",
+        "supported_interfaces": [
+          "power",
+          "spi"
+        ]
       },
       {
         "name": "Light",
         "description": "Discrete lights.",
-        "tier": "subsystem"
+        "tier": "subsystem",
+        "supported_interfaces": [
+          "power"
+        ]
       }
     ],
     "power": [
@@ -414,7 +473,12 @@
         "parameters": [
           "max_current"
         ],
-        "tier": "subsystem"
+        "tier": "subsystem",
+        "supported_interfaces": [
+          "power",
+          "i2c",
+          "spi"
+        ]
       },
       {
         "name": "VoltageRegulator",
@@ -475,17 +539,31 @@
       {
         "name": "MotorDriver",
         "description": "",
-        "tier": "subsystem"
+        "tier": "subsystem",
+        "supported_interfaces": [
+          "power",
+          "i2c",
+          "spi",
+          "uart"
+        ]
       },
       {
         "name": "BrushedMotorDriver",
         "description": "A brushed motor driver, or at least the power stage for one.",
-        "tier": "subsystem"
+        "tier": "subsystem",
+        "supported_interfaces": [
+          "power"
+        ]
       },
       {
         "name": "BldcDriver",
         "description": "A brushless motor driver, or at least the power stage for one - may be as simple",
-        "tier": "subsystem"
+        "tier": "subsystem",
+        "supported_interfaces": [
+          "power",
+          "i2c",
+          "spi"
+        ]
       },
       {
         "name": "HalfBridgeDriver",
@@ -493,30 +571,45 @@
         "parameters": [
           "has_boot_diode"
         ],
-        "tier": "subsystem"
+        "tier": "subsystem",
+        "supported_interfaces": [
+          "power"
+        ]
       },
       {
         "name": "HalfBridge",
         "description": "Half bridge circuit with logic-level inputs and current draw calculated from the",
         "has_default": true,
-        "tier": "functional"
+        "tier": "functional",
+        "supported_interfaces": [
+          "power"
+        ]
       }
     ],
     "analog": [
       {
         "name": "Opamp",
         "description": "Base class for opamps. Parameters need to be more restricted in subclasses.",
-        "tier": "functional"
+        "tier": "functional",
+        "supported_interfaces": [
+          "power"
+        ]
       },
       {
         "name": "MultipackOpamp",
         "description": "Base class for packed opamps - devices that have multiple opamps in a single pac",
-        "tier": "functional"
+        "tier": "functional",
+        "supported_interfaces": [
+          "power"
+        ]
       },
       {
         "name": "OpampApplication",
         "description": "Opamp-based circuits, typically one that perform some function on signals",
-        "tier": "functional"
+        "tier": "functional",
+        "supported_interfaces": [
+          "power"
+        ]
       }
     ],
     "arrays": [
@@ -559,7 +652,10 @@
       {
         "name": "AnalogFilter",
         "description": "Analog signal conditioning subcircuit.",
-        "tier": "functional"
+        "tier": "functional",
+        "supported_interfaces": [
+          "power"
+        ]
       },
       {
         "name": "RfFilter",
@@ -569,7 +665,10 @@
       {
         "name": "DigitalFilter",
         "description": "Digital signal conditioning block.",
-        "tier": "functional"
+        "tier": "functional",
+        "supported_interfaces": [
+          "power"
+        ]
       }
     ],
     "controllers": [
@@ -583,7 +682,7 @@
           "i2c",
           "spi",
           "uart",
-          "can",
+          "canlogic",
           "swd"
         ]
       },
@@ -608,7 +707,7 @@
           "i2c",
           "spi",
           "uart",
-          "can"
+          "canlogic"
         ]
       }
     ],
@@ -616,7 +715,12 @@
       {
         "name": "CurrentSensor",
         "description": "",
-        "tier": "system"
+        "tier": "system",
+        "supported_interfaces": [
+          "power",
+          "i2c",
+          "spi"
+        ]
       },
       {
         "name": "Accelerometer",
@@ -641,7 +745,12 @@
       {
         "name": "EnvironmentalSensor",
         "description": "",
-        "tier": "system"
+        "tier": "system",
+        "supported_interfaces": [
+          "power",
+          "i2c",
+          "spi"
+        ]
       },
       {
         "name": "TemperatureSensor",
@@ -692,7 +801,12 @@
       {
         "name": "MagneticSensor",
         "description": "",
-        "tier": "system"
+        "tier": "system",
+        "supported_interfaces": [
+          "power",
+          "i2c",
+          "spi"
+        ]
       },
       {
         "name": "MagneticSwitch",
@@ -730,7 +844,12 @@
       {
         "name": "DistanceSensor",
         "description": "",
-        "tier": "system"
+        "tier": "system",
+        "supported_interfaces": [
+          "power",
+          "i2c",
+          "uart"
+        ]
       }
     ]
   }
