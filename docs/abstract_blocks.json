@@ -141,6 +141,16 @@
           "a",
           "b"
         ]
+      },
+      "rf": {
+        "name": "RfLink",
+        "description": "RF (Radio Frequency) signal connection for wireless communication",
+        "category": "analog",
+        "endpoints": [
+          "source",
+          "sink",
+          "passive"
+        ]
       }
     },
     "interface_types_info": {
@@ -159,7 +169,7 @@
     "interfaces": [
       {
         "name": "AnalogSwitch",
-        "description": "Base class for a n-ported analog switch with passive-typed ports.",
+        "description": "Base class for analog switches that can route analog signals between multiple channels",
         "tier": "functional",
         "supported_interfaces": [
           "power"
@@ -167,13 +177,16 @@
       },
       {
         "name": "Antenna",
-        "description": "",
+        "description": "Antenna for wireless RF communication",
         "parameters": [
           "frequency",
           "impedance",
           "power"
         ],
-        "tier": "subsystem"
+        "tier": "subsystem",
+        "supported_interfaces": [
+          "rf"
+        ]
       },
       {
         "name": "SolidStateRelay",
@@ -195,7 +208,7 @@
       },
       {
         "name": "IsolatedCanTransceiver",
-        "description": "",
+        "description": "CAN transceiver with galvanic isolation between CAN bus and controller sides",
         "tier": "subsystem",
         "supported_interfaces": [
           "power",
@@ -205,7 +218,7 @@
       },
       {
         "name": "AnalogToDigital",
-        "description": "",
+        "description": "Analog-to-digital converter (ADC)",
         "tier": "functional",
         "supported_interfaces": [
           "power",
@@ -215,7 +228,7 @@
       },
       {
         "name": "DigitalToAnalog",
-        "description": "",
+        "description": "Digital-to-analog converter (DAC)",
         "tier": "functional",
         "supported_interfaces": [
           "power",
@@ -225,16 +238,17 @@
       },
       {
         "name": "SpeakerDriver",
-        "description": "",
+        "description": "Digital audio amplifier for driving speakers (I2S input)",
         "tier": "subsystem",
         "supported_interfaces": [
           "power",
-          "speaker"
+          "speaker",
+          "i2s"
         ]
       },
       {
         "name": "IoExpander",
-        "description": "",
+        "description": "I/O expander chip that provides additional GPIO pins via digital interface",
         "tier": "subsystem",
         "supported_interfaces": [
           "power",
@@ -266,32 +280,47 @@
       {
         "name": "BananaJack",
         "description": "Base class for a single terminal 4mm banana jack, such as used on test equipment",
-        "tier": "subsystem"
+        "tier": "system"
       },
       {
         "name": "RfConnector",
-        "description": "Base class for a RF connector, with a signal and ground. Signal is passive-typed",
-        "tier": "system"
+        "description": "Base class for a RF connector, with a signal and ground",
+        "tier": "system",
+        "supported_interfaces": [
+          "rf"
+        ]
       },
       {
         "name": "UflConnector",
         "description": "Base class for a U.FL / IPEX / UMCC connector, miniature RF connector.",
-        "tier": "system"
+        "tier": "system",
+        "supported_interfaces": [
+          "rf"
+        ]
       },
       {
         "name": "SmaConnector",
         "description": "Base class for a SMA coax connector.",
-        "tier": "system"
+        "tier": "system",
+        "supported_interfaces": [
+          "rf"
+        ]
       },
       {
         "name": "SmaMConnector",
         "description": "Base class for a SMA M connector, pin with internal threads.",
-        "tier": "system"
+        "tier": "system",
+        "supported_interfaces": [
+          "rf"
+        ]
       },
       {
         "name": "SmaFConnector",
         "description": "Base class for a SMA F connector, socket with external threads.",
-        "tier": "system"
+        "tier": "system",
+        "supported_interfaces": [
+          "rf"
+        ]
       },
       {
         "name": "SwdCortexTargetConnector",
@@ -318,7 +347,7 @@
       },
       {
         "name": "UsbConnector",
-        "description": "USB connector of any generation / type.",
+        "description": "USB connector base class for USB 2.0/3.0 data and power connections (Type-C CC negotiation handled by specific subclasses)",
         "tier": "system",
         "supported_interfaces": [
           "power",
@@ -347,14 +376,14 @@
     "clock": [
       {
         "name": "OscillatorReference",
-        "description": "",
+        "description": "Reference oscillator or clock source for timing applications",
         "has_default": true,
         "parameters": [
           "frequency"
         ],
         "tier": "subsystem",
         "supported_interfaces": [
-          "crystal"
+          "power"
         ]
       },
       {
@@ -371,10 +400,11 @@
       {
         "name": "RealtimeClock",
         "description": "Realtime clock device.",
-        "tier": "system",
+        "tier": "subsystem",
         "supported_interfaces": [
           "power",
-          "i2c"
+          "i2c",
+          "crystal"
         ]
       }
     ],
@@ -392,7 +422,7 @@
       },
       {
         "name": "DigitalRotaryEncoder",
-        "description": "Wrapper around RotaryEncoder that provides digital ports that are pulled low (to",
+        "description": "Wrapper around RotaryEncoder that provides digital ports that are pulled low when activated",
         "has_default": true,
         "tier": "functional",
         "supported_interfaces": [
@@ -401,7 +431,7 @@
       },
       {
         "name": "DigitalDirectionSwitch",
-        "description": "Wrapper around DirectionSwitch that provides digital ports that are pulled low (",
+        "description": "Wrapper around DirectionSwitch that provides digital ports for direction sensing",
         "has_default": true,
         "tier": "functional",
         "supported_interfaces": [
@@ -430,7 +460,7 @@
       },
       {
         "name": "Oled",
-        "description": "OLED display, with the pixel density of an LCD but with infinite contrast and no",
+        "description": "OLED display, with the pixel density of an LCD but self-emissive pixels",
         "tier": "subsystem",
         "supported_interfaces": [
           "power",
@@ -493,7 +523,7 @@
       },
       {
         "name": "SwitchingVoltageRegulator",
-        "description": "",
+        "description": "Switching voltage regulator (buck, boost, or buck-boost converter)",
         "tier": "subsystem",
         "supported_interfaces": [
           "power"
@@ -519,7 +549,7 @@
       },
       {
         "name": "BuckBoostConverter",
-        "description": "Step-up or switch-down switching converter",
+        "description": "Step-up or step-down switching converter",
         "has_default": true,
         "tier": "subsystem",
         "supported_interfaces": [
@@ -528,7 +558,7 @@
       },
       {
         "name": "MotorDriver",
-        "description": "",
+        "description": "Motor driver for controlling DC, brushed, or brushless motors",
         "tier": "subsystem",
         "supported_interfaces": [
           "power",
@@ -577,7 +607,7 @@
       },
       {
         "name": "Battery",
-        "description": "",
+        "description": "Battery power source",
         "parameters": [
           "voltage",
           "current"
@@ -617,7 +647,7 @@
     "arrays": [
       {
         "name": "ResistorArray",
-        "description": "An n-element resistor array, where all resistors have the same resistance and po",
+        "description": "An n-element resistor array, where all resistors have the same resistance value",
         "parameters": [
           "count"
         ],
@@ -631,7 +661,7 @@
         "parameters": [
           "size"
         ],
-        "tier": "system",
+        "tier": "subsystem",
         "supported_interfaces": [
           "power",
           "spi"
@@ -641,7 +671,7 @@
     "protection": [
       {
         "name": "CanEsdDiode",
-        "description": "",
+        "description": "ESD protection diode for CAN bus differential signals",
         "tier": "subsystem",
         "supported_interfaces": [
           "candiff"
@@ -649,7 +679,7 @@
       },
       {
         "name": "UsbEsdDiode",
-        "description": "",
+        "description": "ESD protection diode for USB data lines",
         "tier": "subsystem",
         "supported_interfaces": [
           "usb"
@@ -668,7 +698,10 @@
       {
         "name": "RfFilter",
         "description": "RF signal conditioning subcircuit.",
-        "tier": "functional"
+        "tier": "functional",
+        "supported_interfaces": [
+          "rf"
+        ]
       },
       {
         "name": "DigitalFilter",
@@ -682,8 +715,8 @@
     "controllers": [
       {
         "name": "Microcontroller",
-        "description": "Microcontroller (with embedded-class processor) with its surrounding application",
-        "tier": "subsystem",
+        "description": "Microcontroller with programmable firmware and various peripheral interfaces",
+        "tier": "system",
         "supported_interfaces": [
           "power",
           "usb",
@@ -691,13 +724,14 @@
           "spi",
           "uart",
           "canlogic",
-          "swd"
+          "swd",
+          "crystal"
         ]
       },
       {
         "name": "Fpga",
         "description": "FPGA with its surrounding application circuit.",
-        "tier": "subsystem",
+        "tier": "system",
         "supported_interfaces": [
           "power",
           "i2c",
@@ -707,7 +741,7 @@
       },
       {
         "name": "IoController",
-        "description": "Structural abstract base class for a programmable controller chip (including mic",
+        "description": "Structural abstract base class for a programmable controller chip (including microcontrollers and FPGAs)",
         "tier": "system",
         "supported_interfaces": [
           "power",
@@ -722,8 +756,8 @@
     "sensors": [
       {
         "name": "CurrentSensor",
-        "description": "",
-        "tier": "system",
+        "description": "Current measurement sensor",
+        "tier": "subsystem",
         "supported_interfaces": [
           "power",
           "i2c",
@@ -732,7 +766,7 @@
       },
       {
         "name": "Accelerometer",
-        "description": "",
+        "description": "Acceleration sensor for measuring linear acceleration",
         "tier": "subsystem",
         "supported_interfaces": [
           "power",
@@ -742,7 +776,7 @@
       },
       {
         "name": "Gyroscope",
-        "description": "",
+        "description": "Gyroscope sensor for measuring angular velocity",
         "tier": "subsystem",
         "supported_interfaces": [
           "power",
@@ -752,8 +786,8 @@
       },
       {
         "name": "EnvironmentalSensor",
-        "description": "",
-        "tier": "system",
+        "description": "Environmental sensor (temperature, humidity, pressure, etc.)",
+        "tier": "subsystem",
         "supported_interfaces": [
           "power",
           "i2c",
@@ -762,8 +796,8 @@
       },
       {
         "name": "TemperatureSensor",
-        "description": "",
-        "tier": "system",
+        "description": "Temperature measurement sensor",
+        "tier": "subsystem",
         "supported_interfaces": [
           "power",
           "i2c"
@@ -771,8 +805,8 @@
       },
       {
         "name": "HumiditySensor",
-        "description": "",
-        "tier": "system",
+        "description": "Humidity measurement sensor",
+        "tier": "subsystem",
         "supported_interfaces": [
           "power",
           "i2c"
@@ -781,7 +815,7 @@
       {
         "name": "PressureSensor",
         "description": "Sensors measuring ambient pressure",
-        "tier": "system",
+        "tier": "subsystem",
         "supported_interfaces": [
           "power",
           "i2c"
@@ -790,7 +824,7 @@
       {
         "name": "GasSensor",
         "description": "Sensors measuring gas concentration, including non-particle IAQ, TVOC, eCO2, and CO2 sensors",
-        "tier": "system",
+        "tier": "subsystem",
         "supported_interfaces": [
           "power",
           "i2c",
@@ -799,8 +833,8 @@
       },
       {
         "name": "LightSensor",
-        "description": "",
-        "tier": "system",
+        "description": "Light intensity or ambient light sensor",
+        "tier": "subsystem",
         "supported_interfaces": [
           "power",
           "i2c"
@@ -808,8 +842,8 @@
       },
       {
         "name": "MagneticSensor",
-        "description": "",
-        "tier": "system",
+        "description": "Magnetic field sensor or magnetometer",
+        "tier": "subsystem",
         "supported_interfaces": [
           "power",
           "i2c",
@@ -818,7 +852,7 @@
       },
       {
         "name": "MagneticSwitch",
-        "description": "A switch that is activated by a magnetic field, including omnipolar and bipolar ",
+        "description": "A switch that is activated by a magnetic field, including omnipolar and bipolar types",
         "tier": "functional"
       },
       {
@@ -833,11 +867,10 @@
       },
       {
         "name": "Microphone",
-        "description": "",
+        "description": "Microphone for audio input (analog or digital output depending on implementation)",
         "tier": "subsystem",
         "supported_interfaces": [
-          "power",
-          "i2s"
+          "power"
         ]
       },
       {
@@ -846,13 +879,14 @@
         "tier": "subsystem",
         "supported_interfaces": [
           "power",
-          "dvp8"
+          "dvp8",
+          "i2c"
         ]
       },
       {
         "name": "DistanceSensor",
-        "description": "",
-        "tier": "system",
+        "description": "Distance or proximity sensor",
+        "tier": "subsystem",
         "supported_interfaces": [
           "power",
           "i2c",
